@@ -21,6 +21,9 @@
     width: 100%;
     height: 100%;
     display: none;
+    position: absolute; /* ensure it sits under canvas */
+    top: 0;
+    left: 0;
   }
 </style>
 </head>
@@ -28,7 +31,11 @@
 
 <div id="scratch-container">
   <canvas id="scratchCanvas" width="350" height="250"></canvas>
-  <img id="revealImage" src="https://assets.foleon.com/eu-central-1/de-uploads-7e3kk3/45198/prize.f2df759f6e7f.png">
+
+  <!-- ⭐ FIX #2: Add crossOrigin -->
+  <img id="revealImage"
+       crossOrigin="anonymous"
+       src="https://assets.foleon.com/eu-central-1/de-uploads-7e3kk3/45198/prize.f2df759f6e7f.png">
 </div>
 
 <script>
@@ -36,6 +43,10 @@
   const ctx = canvas.getContext("2d");
 
   const cover = new Image();
+
+  /* ⭐ FIX #1: Add crossOrigin */
+  cover.crossOrigin = "anonymous";
+
   cover.src = "https://assets.foleon.com/eu-central-1/de-uploads-7e3kk3/45198/cover.569b524e4814.png";
 
   cover.onload = () => {
@@ -73,7 +84,8 @@
 
     const percent = cleared / (canvas.width * canvas.height) * 100;
 
-    if (percent > 60) {
+    /* ⭐ Optional: lower threshold for testing */
+    if (percent > 10) {
       revealPrize();
     }
   }
